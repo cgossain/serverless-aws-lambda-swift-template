@@ -1,4 +1,4 @@
-# Swift AWS Lambda Project Template
+# Serverless AWS Lambda Swift Project Template
 
 This template project is designed to be used as a starting point for an AWS Lambda and API Gateway project using the new Swift AWS Lambda Runtime and the Serverless Framework.
 
@@ -33,7 +33,7 @@ Each microservice could be made up of a single or several Lamda functions.
 Use the `serverless create` command to download the template into a new project folder:
 
 ```
-serverless create --template-url https://github.com/cgossain/swift-aws-lambda-project-template --path my-new-service
+serverless create --template-url https://github.com/cgossain/serverless-aws-lambda-swift-template.git --path my-new-service
 ```
 
 ### Configure the template
