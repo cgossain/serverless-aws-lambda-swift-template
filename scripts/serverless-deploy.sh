@@ -26,4 +26,14 @@ echo "-------------------------------------------------------------------------"
 echo "deploying using Serverless"
 echo "-------------------------------------------------------------------------"
 
-serverless deploy --config "serverless.yml" --stage dev -v
+# I'm unable to access the $targets variable as an array out here. To fix, we can
+# convert it back to an array and store in a new variable
+# https://stackoverflow.com/a/9294015/485352
+functions=($targets)
+
+# If multiple functions were selected deploy everything, otherwise deploy the specific function
+if [[ ${#functions[@]} > 1 ]]; then
+    serverless deploy --config "serverless.yml" --stage dev -v
+else
+    serverless deploy --config "serverless.yml" --stage dev -v -f $targets
+fi

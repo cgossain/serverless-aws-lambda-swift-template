@@ -18,6 +18,7 @@ set -eu
 targets=$1
 workspace="$(pwd)"
 
+# Create the "builder" docker image
 echo "-------------------------------------------------------------------------"
 echo "preparing docker build image"
 echo "-------------------------------------------------------------------------"
@@ -29,14 +30,19 @@ for executable in ${targets[@]}; do
     echo "-------------------------------------------------------------------------"
     echo "building \"$executable\" lambda"
     echo "-------------------------------------------------------------------------"
-    docker run --rm -v "$workspace":/workspace -w /workspace builder \
-           bash -cl "swift build --product $executable -c release"
+    docker run --rm \
+       -v ~/.ssh:/root/.ssh \
+       -v "$workspace":/workspace \
+       -w /workspace builder \
+       bash -cl "./scripts/build-init.sh $executable"
     echo "done"
 
     echo "-------------------------------------------------------------------------"
     echo "packaging \"$executable\" lambda"
     echo "-------------------------------------------------------------------------"
-    docker run --rm -v "$workspace":/workspace -w /workspace builder \
-           bash -cl "./scripts/package.sh $executable"
+    docker run --rm \
+       -v "$workspace":/workspace \
+       -w /workspace builder \
+       bash -cl "./scripts/package.sh $executable"
     echo "done"
 done

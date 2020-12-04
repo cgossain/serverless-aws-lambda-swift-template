@@ -22,8 +22,23 @@ if [[ ${#executables[@]} = 0 ]]; then
 elif [[ ${#executables[@]} = 1 ]]; then
     targets=${executables[0]}
 elif [[ ${#executables[@]} > 1 ]]; then
-    echo "multiple executables found; selecting all"
-    targets=${executables[@]}
+    echo "multiple executables found:"
+    for executable in ${executables[@]}; do
+      echo "  * $executable"
+    done
+    echo ""
+    read -p "select which executables to deploy (leave blank to deploy all): " selection
+    
+    if [ -z "$selection" ]; then
+      echo "deploying all"
+      targets=${executables[@]}
+    else
+      targets=$selection
+    fi
+
+#    echo "multiple executables found; selecting all"
+#    targets=${executables[@]}
+    
 #    echo "multiple executables found:"
 #    for executable in ${executables[@]}; do
 #      echo "  * $executable"
@@ -43,5 +58,5 @@ echo "-------------------------------------------------------------------------"
 echo "configuration"
 echo "-------------------------------------------------------------------------"
 echo "current dir: $DIR"
-echo "executables: $targets"
+echo "executable(s): $targets"
 echo "-------------------------------------------------------------------------"
