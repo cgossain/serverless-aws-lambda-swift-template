@@ -1,4 +1,4 @@
-# Serverless AWS Lambda Swift Project Template
+# Serverless Template - Swift + AWS Lambda
 
 This template project is designed to be used as a starting point for an AWS Lambda and API Gateway project using the new Swift AWS Lambda Runtime and the Serverless Framework.
 
