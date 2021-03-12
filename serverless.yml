@@ -1,4 +1,4 @@
-service: swift-aws-lambda-project-template
+service: templateservice
 
 package:
   individually: true
@@ -12,30 +12,33 @@ provider:
     payload: "2.0"
   logs:
     httpApi: true
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - logs:CreateLogGroup
-        - logs:CreateLogStream
-        - logs:PutLogEvents
-      Resource: "*"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+  lambdaHashingVersion: 20201221
 
 functions:
-  myFirstFunction:
-    handler: MyFirstLambdaFunction
+  myFirstLambdaFunction:
+    handler: myFirstLambdaFunction
     package:
       individually: true
-      artifact: .build/lambda/MyFirstLambdaFunction/MyFirstLambdaFunction.zip
+      artifact: .build/lambda/myFirstLambdaFunction/myFirstLambdaFunction.zip
     memorySize: 128
     events:
       - httpApi:
           method: GET
           path: /first
-  mySecondFunction:
-    handler: MySecondLambdaFunction
+  mySecondLambdaFunction:
+    handler: mySecondLambdaFunction
     package:
       individually: true
-      artifact: .build/lambda/MySecondLambdaFunction/MySecondLambdaFunction.zip
+      artifact: .build/lambda/mySecondLambdaFunction/mySecondLambdaFunction.zip
     memorySize: 128
     events:
       - httpApi:

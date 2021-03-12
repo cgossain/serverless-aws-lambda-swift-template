@@ -9,18 +9,12 @@ This template project is designed to be used as a starting point for an AWS Lamb
 - Ensure your AWS Account has the right [credentials](https://www.serverless.com/framework/docs/providers/aws/guide/credentials/) to deploy a Serverless stack
 - You should be familiar with using the [Serverless Framework](<(https://www.serverless.com/framework/docs/getting-started/)>)
 
-## Future enhancements
-
-- Improve the included scripts to enable deploying and removing functions individually
-- Better integration with the `serverless create` command to automatically perform the template configuration steps described in this document
-
 ## Project structure
 
-Each Lambda function in this template is configured as a separate target/executable in `Package.swift`.
+A few notes about the project structure:
 
-The `serverless.yml` file manually maps each function to the underlying code using the `artifact` attribute to point to a zip file containing the function executable and any associated dependencies.
-
-**Note: The zip file is packaged as one of the steps in the `build-and-packaged.sh` script which is called by the `serverless-deploy.sh` script.**
+- Each Lambda function in this template is configured as a separate target/executable in `Package.swift`.
+- The `serverless.yml` file manually maps each function to its underlying code using the `artifact` attribute to point to a zip file containing the function executable and any associated dependencies. This zip file is packaged as one of the steps in the `build-and-package.sh` script which is called by the `serverless-deploy.sh` script.
 
 ## Usage
 
@@ -28,23 +22,28 @@ Create a new service for each logical microservice you intend to deploy.
 
 Each microservice could be made up of a single or several Lamda functions.
 
-### Create a new service
+## Create a new service using the included scripts
 
-Use the `serverless create` command to download the template into a new project folder:
+### 1. Bootstrap new project
 
+Download the `bootstrap-new-service.sh` script to the directory where you want to create your new service:
 ```
-serverless create --template-url https://github.com/cgossain/serverless-aws-lambda-swift-template.git --path my-new-service
-```
-
-### Configure the template
-
-1. Open `Package.swift`:
-
-```
-cd my-new-service && open Package.swift
+curl https://raw.githubusercontent.com/cgossain/serverless-template-swift-aws-lambda/master/scripts/bootstrap-new-service.sh --output bootstrap-new-service.sh && chmod +x bootstrap-new-service.sh
 ```
 
-2. Change the package name, and replace the template executable products and targets with your first function:
+Then run it:
+```
+// Arguments:
+// $1 - The name of your new microservice
+./bootstrap-new-service.sh <myservicename>
+```
+
+### 2. Review the `Package.swift` file
+
+Navigate to the directory of the service you just created, and verify the following in `Package.swift`:
+
+- Double check the package name
+- Replace the template executable products and targets with your first function
 
 <pre>
 // swift-tools-version:5.3
@@ -55,10 +54,10 @@ import PackageDescription
 let package = Package(
     <b>name: "MyPackageName"</b>,
     platforms: [
-        .macOS(.v10_13),
+        .macOS(.v10_14),
     ],
     products: [
-        <b>.executable(name: "MyFunctionName", targets: ["MyFunctionName"])</b>,
+        <b>.executable(name: "myFunctionName", targets: ["MyFunctionName"])</b>,
         ...
     ],
     dependencies: [
@@ -99,12 +98,20 @@ let package = Package(
 <pre>
 ...
 
+provider:
+  name: aws
+  runtime: provided
+  stage: ${opt:stage, 'dev'}
+  region: <b>us-east-1</b>
+
+...
+
 functions:
   <b>myFunctionName:</b>
-    handler: <b>MyFunctionName</b>
+    handler: <b>myFunctionName</b>
     package:
       individually: true
-      artifact: .build/lambda/<b>MyFunctionName</b>/<b>MyFunctionName</b>.zip
+      artifact: .build/lambda/<b>myFunctionName/myFunctionName.zip</b>
     memorySize: 128
     events:
       - httpApi:

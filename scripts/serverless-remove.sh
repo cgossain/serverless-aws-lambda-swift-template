@@ -30,8 +30,9 @@ echo "-------------------------------------------------------------------------"
 functions=($targets)
 
 # If multiple functions were selected deploy everything, otherwise deploy the specific function
-if [[ ${#functions[@]} > 1 ]]; then
-    serverless remove --config "serverless.yml" --stage dev -v
-else
-    serverless remove --config "serverless.yml" --stage dev -v -f $targets
-fi
+serverless remove --config "serverless.yml" --stage dev -v
+# if [[ ${#functions[@]} > 1 ]]; then
+#     serverless remove --config "serverless.yml" --stage dev -v
+# else
+#     serverless remove --config "serverless.yml" --stage dev -v -f $targets
+# fi

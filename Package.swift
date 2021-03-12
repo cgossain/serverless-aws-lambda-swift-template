@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftAWSLambdaProjectTemplate",
+    name: "templateservice",
     platforms: [
-        .macOS(.v10_13),
+        .macOS(.v10_14),
     ],
     products: [
-        .executable(name: "MyFirstLambdaFunction", targets: ["MyFirstLambdaFunction"]),
-        .executable(name: "MySecondLambdaFunction", targets: ["MySecondLambdaFunction"]),
+        .executable(name: "myFirstLambdaFunction", targets: ["myFirstLambdaFunction"]),
+        .executable(name: "mySecondLambdaFunction", targets: ["mySecondLambdaFunction"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -20,14 +20,14 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "MyFirstLambdaFunction",
+            name: "myFirstLambdaFunction",
             dependencies: [
                 .product(name: "AWSLambdaRuntime", package: "swift-aws-lambda-runtime"),
                 .product(name: "AWSLambdaEvents", package: "swift-aws-lambda-runtime"),
             ]
         ),
         .target(
-            name: "MySecondLambdaFunction",
+            name: "mySecondLambdaFunction",
             dependencies: [
                 .product(name: "AWSLambdaRuntime", package: "swift-aws-lambda-runtime"),
                 .product(name: "AWSLambdaEvents", package: "swift-aws-lambda-runtime"),
