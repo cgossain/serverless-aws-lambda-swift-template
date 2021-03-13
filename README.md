@@ -137,13 +137,17 @@ Run the following command from the root folder to build and deploy all functions
 ./scripts/serverless-deploy.sh
 ```
 
-## Remove Deployment
+## Remove deployment
 
 Run the following command from the root folder to remove the deployment of all functions:
 
 ```
 ./scripts/serverless-remove.sh
 ```
+
+## Future enhancements
+
+- Fix the deploy scripts to properly deploy or remove single functions at a time
 
 ## Credits and references
 
